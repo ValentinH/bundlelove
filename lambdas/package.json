@@ -7,6 +7,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "package-build-stats": "^5.0.0",
+    "pkg-versions": "^2.1.0",
     "serverless-http": "^2.0.2"
   },
   "devDependencies": {
