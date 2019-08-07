@@ -1,0 +1,22 @@
+org: valentinhervieu
+app: bundlephobia-clone-api
+service: serverless-bundlephobia-api
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-2
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - http:
+          path: latest
+          method: get
+      - http:
+          path: history
+          method: get
+
+plugins:
+  - serverless-offline

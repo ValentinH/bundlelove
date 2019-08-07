@@ -1,0 +1,15 @@
+{
+  "name": "bundlephobia-clone-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "express": "^4.17.1",
+    "package-build-stats": "^5.0.0",
+    "serverless-http": "^2.0.2"
+  },
+  "devDependencies": {
+    "serverless-offline": "^5.9.0"
+  }
+}
