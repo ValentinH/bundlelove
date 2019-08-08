@@ -28,16 +28,20 @@ app.get('/latest', async (req, res) => {
     const results = await analyser.getPackageStat(req.query.name)
     res.json(results)
   } catch (e) {
-    res.status(500)
+    res.sendStatus(500)
   }
 })
 
 app.get('/history', async (req, res) => {
   try {
     const results = await analyser.getPackageStatHistory(req.query.name)
-    res.json(results)
+
+    if (!results) {
+      return res.sendStatus(404)
+    }
+    return res.json(results)
   } catch (e) {
-    res.status(500)
+    res.sendStatus(500)
   }
 })
 
