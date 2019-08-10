@@ -1,6 +1,7 @@
 {
-  "name": "bundlephobia-clone-api",
+  "name": "bundlelove-api",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {},

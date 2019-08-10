@@ -1,6 +1,6 @@
 org: valentinhervieu
-app: bundlephobia-clone-api
-service: serverless-bundlephobia-api
+app: bundlelove
+service: serverless-bundlelove-api
 
 provider:
   name: aws
@@ -20,3 +20,7 @@ functions:
 
 plugins:
   - serverless-offline
+
+custom:
+  serverless-offline:
+    port: 301
