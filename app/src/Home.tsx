@@ -2,6 +2,8 @@ import React from 'react'
 import { TextField, Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Logo from 'components/Logo'
+import SearchInput from 'components/SearchInput'
+import { useRouter } from 'hooks'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,6 +13,8 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
+      textAlign: 'center',
+      padding: theme.spacing(2),
     },
     logo: {
       width: 100,
@@ -20,11 +24,23 @@ const useStyles = makeStyles((theme: Theme) =>
     red: {
       color: theme.palette.primary.main,
     },
+    search: {
+      marginTop: theme.spacing(3),
+      marginBottom: '35vh',
+    },
   })
 )
 
 const Home: React.FC = () => {
   const classes = useStyles()
+  const { history } = useRouter()
+
+  const onSelect = (value: string) => {
+    if (value) {
+      history.push(`/result?p=${value}`)
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Logo className={classes.logo} />
@@ -34,7 +50,7 @@ const Home: React.FC = () => {
       <Typography variant="subtitle1">
         find the cost of adding a npm package to your bundle
       </Typography>
-      <TextField />
+      <SearchInput onSelect={onSelect} className={classes.search} />
     </div>
   )
 }
