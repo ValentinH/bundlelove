@@ -1,5 +1,5 @@
 import React from 'react'
-import Autosuggest from 'react-autosuggest'
+import Downshift from 'downshift'
 import { useDebouncedCallback } from 'use-debounce'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import {
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
     spinner: {
       marginRight: theme.spacing(2),
     },
-    suggestionsContainerOpen: {
+    suggestionsContainer: {
       position: 'absolute',
       left: 0,
       right: 0,
@@ -64,76 +64,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const renderInputComponent = (inputProps: any) => {
-  const { classes, ref, isSearching, onSubmit, ...other } = inputProps
-  return (
-    <form className={classes.search} onSubmit={onSubmit}>
-      <TextField
-        variant="outlined"
-        classes={{
-          root: classes.input,
-        }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon color="primary" />
-            </InputAdornment>
-          ),
-          endAdornment: isSearching && (
-            <InputAdornment position="end">
-              <CircularProgress
-                color="secondary"
-                size={20}
-                thickness={4}
-                className={classes.spinner}
-              />
-            </InputAdornment>
-          ),
-        }}
-        innerRef={ref}
-        {...other}
-      />
-    </form>
-  )
-}
-
-const renderSuggestion = (
-  suggestion: Suggestion,
-  { isHighlighted }: Autosuggest.RenderSuggestionParams,
-  { classes }: { classes: { [key: string]: string } }
-) => {
-  return (
-    <MenuItem selected={isHighlighted} dense component="div">
-      <div className={classes.suggestion}>
-        <div dangerouslySetInnerHTML={{ __html: suggestion.highlight }} />
-        <Typography variant="caption" component="div" className={classes.suggestionDescription}>
-          {suggestion.package.description}
-        </Typography>
-      </div>
-    </MenuItem>
-  )
-}
-
-const getSuggestionValue = (suggestion: Suggestion) => suggestion.package.name
-
 export default function Search({ onSelect, ...otherProps }: Props) {
   const classes = useStyles()
-  const [input, setInput] = React.useState('')
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([])
   const [isSearching, setIsSearching] = React.useState(false)
-  const [lastSearch, setLastSearch] = React.useState(null)
 
-  const onSuggestionSelected = (
-    _event: React.SyntheticEvent<{}>,
-    { suggestionValue }: Autosuggest.SuggestionSelectedEventData<Suggestion>
-  ) => {
-    _event.preventDefault()
-    onSelect(suggestionValue)
+  const onSuggestionSelected = (suggestion: Suggestion) => {
+    onSelect(suggestion.package.name)
   }
 
-  const onSubmit = (e: React.SyntheticEvent<{}>) => {
-    e.preventDefault()
-    onSelect(input)
+  const onSubmit = (value: Maybe<string>) => {
+    if (value) {
+      onSelect(value)
+    }
   }
 
   const [fetchSuggestions] = useDebouncedCallback(async (value: any) => {
@@ -143,52 +86,108 @@ export default function Search({ onSelect, ...otherProps }: Props) {
     setIsSearching(false)
   }, 300)
 
-  const handleSuggestionsFetchRequested = ({ value }: any) => {
-    if (value !== lastSearch) {
+  const onInputValueChange = (value: string) => {
+    if (value) {
       fetchSuggestions(value)
-      setLastSearch(value)
     }
-  }
-
-  const handleChange = (_event: React.ChangeEvent<{}>, { newValue }: Autosuggest.ChangeEvent) => {
-    setInput(newValue)
-  }
-
-  const autosuggestProps = {
-    renderInputComponent,
-    suggestions,
-    onSuggestionsFetchRequested: handleSuggestionsFetchRequested,
-    onSuggestionsClearRequested: () => {},
-    getSuggestionValue,
-    renderSuggestion: (suggestion: Suggestion, params: Autosuggest.RenderSuggestionParams) =>
-      renderSuggestion(suggestion, params, { classes }),
-    onSuggestionSelected,
   }
 
   return (
     <div {...otherProps}>
-      <Autosuggest
-        {...autosuggestProps}
-        inputProps={{
-          classes,
-          id: 'search-input',
-          placeholder: 'find package',
-          value: input,
-          onChange: handleChange,
-          isSearching,
-          onSubmit,
+      <Downshift
+        id="downshift-simple"
+        onChange={onSuggestionSelected}
+        onInputValueChange={onInputValueChange}
+        itemToString={(suggestion: Maybe<Suggestion>) =>
+          suggestion ? suggestion.package.name : ''
+        }
+        defaultHighlightedIndex={0}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          getLabelProps,
+          getMenuProps,
+          highlightedIndex,
+          inputValue,
+          isOpen,
+          openMenu,
+          closeMenu,
+        }) => {
+          const { onBlur, onFocus, ...inputProps } = getInputProps({
+            placeholder: 'find package',
+            onFocus: openMenu,
+            onBlur: (e: React.SyntheticEvent<HTMLInputElement>) => {
+              closeMenu()
+              // @ts-ignore https://github.com/downshift-js/downshift/issues/734
+              e.nativeEvent.preventDownshiftDefault = true
+            },
+          })
+
+          return (
+            <form
+              onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => {
+                e.preventDefault()
+                onSubmit(inputValue)
+              }}
+              className={classes.container}
+            >
+              <TextField
+                variant="outlined"
+                classes={{
+                  root: classes.input,
+                }}
+                InputLabelProps={getLabelProps()}
+                InputProps={{
+                  onBlur,
+                  onFocus,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon color="primary" />
+                    </InputAdornment>
+                  ),
+                  endAdornment: isSearching && (
+                    <InputAdornment position="end">
+                      <CircularProgress
+                        color="secondary"
+                        size={20}
+                        thickness={4}
+                        className={classes.spinner}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                inputProps={inputProps}
+              />
+              <div {...getMenuProps()} className={classes.suggestionsContainer}>
+                {isOpen ? (
+                  <Paper square>
+                    {suggestions.map((suggestion, index) => (
+                      <MenuItem
+                        {...getItemProps({ item: suggestion })}
+                        selected={highlightedIndex === index}
+                        dense
+                        key={suggestion.package.name}
+                      >
+                        <div className={classes.suggestion}>
+                          <div dangerouslySetInnerHTML={{ __html: suggestion.highlight }} />
+                          <Typography
+                            variant="caption"
+                            component="div"
+                            className={classes.suggestionDescription}
+                          >
+                            {suggestion.package.description}
+                          </Typography>
+                        </div>
+                      </MenuItem>
+                    ))}
+                  </Paper>
+                ) : null}
+              </div>
+            </form>
+          )
         }}
-        theme={{
-          container: classes.container,
-          suggestionsContainerOpen: classes.suggestionsContainerOpen,
-          suggestionsList: classes.suggestionsList,
-        }}
-        renderSuggestionsContainer={options => (
-          <Paper {...options.containerProps} square>
-            {options.children}
-          </Paper>
-        )}
-      />
+      </Downshift>
     </div>
   )
 }

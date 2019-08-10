@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Logo from 'components/Logo'
 import SearchInput from 'components/SearchInput'
