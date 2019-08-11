@@ -4,8 +4,25 @@ service: serverless-bundlelove-api
 
 provider:
   name: aws
-  runtime: nodejs8.10
-  region: eu-west-2
+  stage: dev
+  runtime: nodejs10.x
+  region: eu-west-3
+
+  environment:
+    tableName: ${self:custom.tableName}
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - 'Fn::GetAtt': [PackagesTable, Arn]
 
 functions:
   app:
@@ -21,6 +38,12 @@ functions:
 plugins:
   - serverless-offline
 
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb-table.yml)}
+
 custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-bundlelove-packages
   serverless-offline:
     port: 301

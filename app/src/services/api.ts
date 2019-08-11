@@ -36,6 +36,7 @@ export const getPackageInfo = async (query: string) => {
           name,
           ...(version && { version }),
         },
+        timeout: 30000,
       })
       .json()
     return info
@@ -51,6 +52,7 @@ export const getPackageHistory = async (name: string) => {
         searchParams: {
           name,
         },
+        timeout: 30000,
       })
       .json()
     return history

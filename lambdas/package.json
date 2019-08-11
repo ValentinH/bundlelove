@@ -5,14 +5,18 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn serverless offline start --port 3001"
+    "start": "yarn serverless offline start --port 3001",
+    "test": "yarn jest"
   },
   "dependencies": {
+    "aws-sdk": "^2.507.0",
     "express": "^4.17.1",
+    "git-url-parse": "^11.1.2",
     "got": "^9.6.0",
     "package-build-stats": "^5.0.0",
     "pkg-versions": "^2.1.0",
-    "serverless-http": "^2.0.2"
+    "serverless-http": "^2.0.2",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "jest": "^24.8.0",
