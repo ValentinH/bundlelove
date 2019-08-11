@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     searchInput: {
       width: '100%',
-      marginBottom: theme.spacing(4),
+      marginBottom: theme.spacing(3),
       [theme.breakpoints.up('sm')]: {
         width: 400,
       },
@@ -26,7 +26,12 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'none',
+        height: '60vh',
+        maxHeight: 360,
       },
+    },
+    card: {
+      height: '100%',
     },
   })
 )
@@ -96,12 +101,12 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
       ) : packageInfo ? (
         <div className={classes.infoRow}>
           <Card>
-            <CardContent>
+            <CardContent classes={{ root: classes.card }}>
               <PackageStats info={packageInfo} />
             </CardContent>
           </Card>
           <Card>
-            <CardContent>
+            <CardContent classes={{ root: classes.card }}>
               <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
             </CardContent>
           </Card>

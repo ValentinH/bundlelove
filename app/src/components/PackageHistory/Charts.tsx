@@ -14,10 +14,14 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       height: '40vh',
-      marginBottom: 50,
+      maxHeight: 250,
+      paddingBottom: 50,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'flex-end',
+      [theme.breakpoints.up('sm')]: {
+        height: '100%',
+      },
     },
     bar: {
       cursor: 'pointer',
@@ -52,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
     barLabel: {
       position: 'absolute',
       bottom: -40,
+      left: 4,
       transform: 'rotate(270deg)',
     },
   })
