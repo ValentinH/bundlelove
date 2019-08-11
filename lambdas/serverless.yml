@@ -55,4 +55,4 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   tableName: ${self:custom.stage}-bundlelove-packages
   serverless-offline:
-    port: 301
+    port: 3001
