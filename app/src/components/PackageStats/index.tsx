@@ -3,7 +3,7 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Divider, Typography } from '@material-ui/core'
 import { PackageInfo } from 'services/api'
 import Stat from './Stat'
-import * as helpers from './helpers'
+import * as formatUtils from 'utils/format'
 
 interface Props {
   info: PackageInfo
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const PackageStats: React.FC<Props> = ({ info }) => {
   const classes = useStyles()
-  const times = helpers.getTimeFromSize(info.gzip)
+  const times = formatUtils.getTimeFromSize(info.gzip)
   return (
     <div className={classes.root}>
       <Typography variant="h5" className={classes.title}>

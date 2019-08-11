@@ -7,6 +7,7 @@ import SearchInput from 'components/SearchInput'
 import * as api from 'services/api'
 import * as packageUtils from 'utils/package'
 import PackageStats from 'components/PackageStats'
+import PackageHistory from 'components/PackageHistory'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,9 +28,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     infoRow: {
       width: '100%',
+      display: 'grid',
+      gridTemplateRows: 'auto',
+      gridRowGap: theme.spacing(3),
       [theme.breakpoints.up('sm')]: {
-        display: 'grid',
         gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: 'none',
       },
     },
   })
@@ -37,13 +41,29 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
   const classes = useStyles()
-  const urlParams = qs.parse(location.search)
   const [searchValue, setSearchValue] = React.useState('')
   const [packageInfo, setPackageInfo] = React.useState<Maybe<api.PackageInfo>>(null)
-  const [isFetchingInfo, setIsFetchinInfo] = React.useState(true)
+  const [isFetchingInfo, setIsFetchingInfo] = React.useState(true)
+
+  const onNewSearch = React.useCallback(
+    async (query: string) => {
+      setIsFetchingInfo(true)
+      try {
+        const info = await api.getPackageInfo(query)
+        setPackageInfo(info)
+        if (info) {
+          history.replace(`/result?p=${info.name}@${info.version}`)
+        }
+      } catch (e) {
+        setPackageInfo(null)
+      }
+      setIsFetchingInfo(false)
+    },
+    [history]
+  )
 
   React.useEffect(() => {
-    const { p } = urlParams
+    const { p } = qs.parse(location.search)
     if (typeof p === 'string' && p.trim()) {
       const search = p.trim()
       setSearchValue(search)
@@ -54,23 +74,21 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
         onNewSearch(search)
       }
     } else {
-      setIsFetchinInfo(false)
+      setIsFetchingInfo(false)
     }
-  }, [urlParams.p])
-
-  const onNewSearch = async (query: string) => {
-    setIsFetchinInfo(true)
-    const info = await api.getPackageInfo(query)
-    setPackageInfo(info)
-    if (info) {
-      history.replace(`/result?p=${info.name}@${info.version}`)
-    }
-    setIsFetchinInfo(false)
-  }
+  }, [location, packageInfo, onNewSearch])
 
   const onSelect = (value: string) => {
     if (value) {
       history.push(`/result?p=${value.trim()}`)
+    }
+  }
+
+  const onVersionSelect = (version: string) => {
+    if (packageInfo) {
+      const newPackageName = `${packageInfo.name}@${version}`
+      onNewSearch(newPackageName)
+      history.push(`/result?p=${newPackageName}`)
     }
   }
 
@@ -82,7 +100,7 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
       ) : packageInfo ? (
         <div className={classes.infoRow}>
           <PackageStats info={packageInfo} />
-          <div>History</div>
+          <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
         </div>
       ) : (
         <Typography variant="subtitle1">Package not found</Typography>

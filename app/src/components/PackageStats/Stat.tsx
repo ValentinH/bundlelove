@@ -2,7 +2,7 @@ import React from 'react'
 import { useId } from 'react-id-generator'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
-import * as helpers from './helpers'
+import * as formatUtils from 'utils/format'
 
 interface Props {
   title: string
@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Stat: React.FC<Props> = ({ title, value, unitType }) => {
   const classes = useStyles()
-  const { size, unit } = unitType === 'size' ? helpers.formatSize(value) : helpers.formatTime(value)
+  const { size, unit } =
+    unitType === 'size' ? formatUtils.formatSize(value) : formatUtils.formatTime(value)
   const roundedSize =
     unitType === 'size' ? parseFloat(size.toFixed(1)) : parseFloat(size.toFixed(2))
   const [htmlId] = useId()
