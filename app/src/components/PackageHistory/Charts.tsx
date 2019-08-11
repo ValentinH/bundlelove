@@ -73,6 +73,7 @@ const Charts: React.FC<Props> = ({ history, onSelect }) => {
         return (
           <Tooltip
             title={tooltipTitle}
+            aria-label={`${item.version}: ${tooltipTitle}`}
             placement="top"
             key={item.version}
             onClick={() => onSelect(item.version)}
