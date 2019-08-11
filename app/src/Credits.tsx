@@ -8,7 +8,7 @@ const Credits: React.FC<RouteComponentProps> = () => {
       <CardContent>
         <Typography variant="h5">Credits</Typography>
         <p>
-          All this application is purely a copy of the awesome{' '}
+          This application is purely a clone of the awesome{' '}
           <Link href="https://bundlephobia.com">BundlePhobia</Link>.
         </p>
         <div>

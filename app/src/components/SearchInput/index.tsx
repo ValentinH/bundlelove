@@ -1,7 +1,7 @@
 import React from 'react'
 import Downshift from 'downshift'
 import { useDebouncedCallback } from 'use-debounce'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
+import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import {
   InputAdornment,
   TextField,
@@ -39,13 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       left: 0,
       right: 0,
-      maxHeight: '35vh',
+      maxHeight: 240,
       overflow: 'auto',
+      zIndex: 1,
     },
     suggestionsList: {
       margin: 0,
       padding: 0,
       listStyleType: 'none',
+    },
+    selectedSuggestion: {
+      background: `${fade(theme.palette.secondary.main, 0.7)}!important`,
     },
     suggestion: {
       lineHeight: 1.2,
@@ -156,15 +160,16 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
                 }}
                 inputProps={inputProps}
               />
-              <div {...getMenuProps()} className={classes.suggestionsContainer}>
+              <div {...getMenuProps()}>
                 {isOpen ? (
-                  <Paper square>
+                  <Paper square className={classes.suggestionsContainer}>
                     {suggestions.map((suggestion, index) => (
                       <MenuItem
                         {...getItemProps({ item: suggestion })}
                         selected={highlightedIndex === index}
                         dense
                         key={suggestion.package.name}
+                        classes={{ selected: classes.selectedSuggestion }}
                       >
                         <div className={classes.suggestion}>
                           <div dangerouslySetInnerHTML={{ __html: suggestion.highlight }} />

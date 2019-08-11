@@ -19,19 +19,21 @@ const getPackageInfo = async (packageName, version = '') => {
     winston.error('failed to parse repository url', repository)
   }
 
+  const cleanDesc = description ? description.substring(0, 300) : ''
+
   if (version) {
     return {
       name,
       version: body.version,
       repository: repositoryUrl,
-      description: description.substring(0, 300),
+      description: cleanDesc,
     }
   }
   return {
     name,
     version: body['dist-tags'].latest,
     repository: repositoryUrl,
-    description: description.substring(0, 300),
+    description: cleanDesc,
   }
 }
 
@@ -47,6 +49,7 @@ const getPackageStat = async (name, version) => {
   try {
     info = await getPackageInfo(name, version)
   } catch (e) {
+    console.error(e)
     return null
   }
 

@@ -33,8 +33,9 @@ export const getPackagesSuggestions = async (query: string) => {
     }
   }
   try {
+    const [cleanQuery] = query.split('@')
     const suggestions: Suggestion[] = await ky
-      .get(`https://api.npms.io/v2/search/suggestions?q=${query}`)
+      .get(`https://api.npms.io/v2/search/suggestions?q=${cleanQuery}`)
       .json()
     return suggestions.sort(suggestionSort)
   } catch (e) {
