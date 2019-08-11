@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/bundlelove/static/js/main.758eb32e.chunk.js",
+    "main.js.map": "/bundlelove/static/js/main.758eb32e.chunk.js.map",
+    "runtime~main.js": "/bundlelove/static/js/runtime~main.8af550e1.js",
+    "runtime~main.js.map": "/bundlelove/static/js/runtime~main.8af550e1.js.map",
+    "static/js/2.ecc7ef71.chunk.js": "/bundlelove/static/js/2.ecc7ef71.chunk.js",
+    "static/js/2.ecc7ef71.chunk.js.map": "/bundlelove/static/js/2.ecc7ef71.chunk.js.map",
+    "index.html": "/bundlelove/index.html",
+    "precache-manifest.0a8cf030e6f7cc7e1377e802c8fbce4d.js": "/bundlelove/precache-manifest.0a8cf030e6f7cc7e1377e802c8fbce4d.js",
+    "service-worker.js": "/bundlelove/service-worker.js"
+  }
+}
