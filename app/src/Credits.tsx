@@ -1,7 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Card, CardContent, Link, Typography } from '@material-ui/core'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
 const Credits: React.FC<RouteComponentProps> = () => {
   return (

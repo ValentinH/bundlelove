@@ -4,7 +4,6 @@ import { Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Logo from 'components/Logo'
 import SearchInput from 'components/SearchInput'
-import Footer from 'components/Footer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
