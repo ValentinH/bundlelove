@@ -68,15 +68,21 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
       const search = p.trim()
       setSearchValue(search)
 
-      // only submit the search if the package has really changed
-      const { name } = packageUtils.getNameAndVersion(search)
-      if (!packageInfo || name !== packageInfo.name) {
+      // only submit the search if the requested package has really changed
+      const newSearch = packageUtils.getNameAndVersion(search)
+      const currentSearch = packageUtils.getNameAndVersion(searchValue)
+      if (
+        newSearch.name !== currentSearch.name ||
+        (newSearch.name === currentSearch.name &&
+          currentSearch.version &&
+          newSearch.version !== currentSearch.version)
+      ) {
         onNewSearch(search)
       }
     } else {
       setIsFetchingInfo(false)
     }
-  }, [location, packageInfo, onNewSearch])
+  }, [location, searchValue, onNewSearch])
 
   const onSelect = (value: string) => {
     if (value) {
@@ -86,9 +92,7 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
 
   const onVersionSelect = (version: string) => {
     if (packageInfo) {
-      const newPackageName = `${packageInfo.name}@${version}`
-      onNewSearch(newPackageName)
-      history.push(`/result?p=${newPackageName}`)
+      history.push(`/result?p=${packageInfo.name}@${version}`)
     }
   }
 
