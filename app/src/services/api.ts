@@ -24,7 +24,7 @@ export type PackageHistory = PackageHistoryItem[]
 
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://ka3y63g6v3.execute-api.eu-west-2.amazonaws.com/prod'
+    ? 'https://bohq9elnw2.execute-api.eu-west-3.amazonaws.com/prod'
     : 'http://localhost:3001'
 
 export const getPackageInfo = async (query: string) => {
