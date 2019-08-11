@@ -4,24 +4,22 @@ const analyser = require('./package-analyser')
 
 const app = express()
 
-const allowedOrigins = ['http://localhost:3000', 'https://valentin-hervieu.fr']
-
 // CORS middleware
-// if (!process.env.IS_OFFLINE) {
-//   app.use(function(req, res, next) {
-//     const origin = req.headers.origin
-//     if (allowedOrigins.includes(origin)) {
-//       res.setHeader('Access-Control-Allow-Origin', origin)
-//       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-//       next()
-//     } else {
-//       return res.status(403).json({
-//         status: 403,
-//         message: 'This API is only for https://valentin-hervieu.fr',
-//       })
-//     }
-//   })
-// }
+if (!process.env.IS_OFFLINE) {
+  app.use(function(req, res, next) {
+    const origin = req.headers.origin
+    if (origin && origin.startsWith('https://bundlelove')) {
+      res.setHeader('Access-Control-Allow-Origin', origin)
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+      next()
+    } else {
+      return res.status(403).json({
+        status: 403,
+        message: 'This API is only for BundleLove',
+      })
+    }
+  })
+}
 
 app.get('/stats', async (req, res) => {
   try {

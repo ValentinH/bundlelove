@@ -7,6 +7,7 @@ provider:
   stage: dev
   runtime: nodejs10.x
   region: eu-west-3
+  timeout: 30
 
   usagePlan:
     quota:

@@ -5,8 +5,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn serverless offline start --port 3001",
-    "test": "yarn jest"
+    "start": "serverless offline start --port 3001",
+    "test": "yarn jest",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod"
   },
   "dependencies": {
     "aws-sdk": "^2.507.0",

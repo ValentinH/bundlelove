@@ -1,7 +1,7 @@
 {
   "name": "bundlelove-app",
   "version": "1.0.0",
-  "homepage": "http://valentinh.github.io/bundlelove",
+  "homepage": "https://bundlelove.valentinhervieu.now.sh",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -9,7 +9,7 @@
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(ky)/)'",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "now"
   },
   "dependencies": {
     "@material-ui/core": "^4.3.1",
@@ -51,7 +51,7 @@
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^9.1.0",
     "@types/jest": "^24.0.17",
-    "gh-pages": "^2.1.1",
+    "now": "^16.1.1",
     "ts-jest": "^24.0.2"
   }
 }
