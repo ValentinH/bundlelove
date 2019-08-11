@@ -12,7 +12,7 @@ functions:
     handler: index.handler
     events:
       - http:
-          path: latest
+          path: stats
           method: get
       - http:
           path: history

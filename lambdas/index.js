@@ -4,7 +4,7 @@ const analyser = require('./package-analyser')
 
 const app = express()
 
-const allowedOrigins = ['http://localhost:8000', 'https://valentin-hervieu.fr']
+const allowedOrigins = ['http://localhost:3000', 'https://valentin-hervieu.fr']
 
 // CORS middleware
 // if (!process.env.IS_OFFLINE) {
@@ -23,11 +23,18 @@ const allowedOrigins = ['http://localhost:8000', 'https://valentin-hervieu.fr']
 //   })
 // }
 
-app.get('/latest', async (req, res) => {
+app.get('/stats', async (req, res) => {
   try {
-    const results = await analyser.getPackageStat(req.query.name)
-    res.json(results)
+    const results = await analyser.getPackageStat(req.query.name, req.query.version)
+    if (results) {
+      res.json(results)
+    } else {
+      res.sendStatus(404)
+    }
   } catch (e) {
+    if (process.env.IS_OFFLINE) {
+      console.error(e)
+    }
     res.sendStatus(500)
   }
 })
@@ -41,6 +48,9 @@ app.get('/history', async (req, res) => {
     }
     return res.json(results)
   } catch (e) {
+    if (process.env.IS_OFFLINE) {
+      console.error(e)
+    }
     res.sendStatus(500)
   }
 })

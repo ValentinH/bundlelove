@@ -1,8 +1,42 @@
+const got = require('got')
 const getBuiltPackageStats = require('package-build-stats')
 const pkgVersions = require('pkg-versions')
 
-const getPackageStat = name => {
-  return getBuiltPackageStats(name)
+const getPackageInfo = async (name, version = '') => {
+  const { body } = await got(`https://registry.yarnpkg.com/${name}/${version}`, { json: true })
+
+  if (version) {
+    return {
+      name: body.name,
+      version: body.version,
+      repository: body.repository.url,
+      description: body.description,
+    }
+  }
+  return {
+    name: body.name,
+    version: body['dist-tags'].latest,
+    repository: body.repository.url,
+    description: body.description,
+  }
+}
+
+const getPackageStat = async (name, version) => {
+  let info = null
+  try {
+    info = await getPackageInfo(name, version)
+  } catch (e) {
+    return null
+  }
+
+  // const sizeStats = await getBuiltPackageStats(`${info.name}@${info.version}`)
+
+  return {
+    ...info,
+    size: 30000, //sizeStats.size,
+    gzip: 20000, //sizeStats.gzip,
+    // dependencySizes: sizeStats.dependencySizes,
+  }
 }
 
 const getVersionsForHistory = versions => {

@@ -14,6 +14,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import { getPackagesSuggestions, Suggestion } from 'services/npms'
 
 interface Props {
+  initialValue?: string
   onSelect: (value: string) => void
   [key: string]: any
 }
@@ -29,9 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
     input: {
       color: 'inherit',
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: 400,
-      },
     },
     spinner: {
       marginRight: theme.spacing(2),
@@ -64,19 +62,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function Search({ onSelect, ...otherProps }: Props) {
+export default function Search({ initialValue, onSelect, ...otherProps }: Props) {
   const classes = useStyles()
+  const [inputValue, setInputValue] = React.useState(initialValue || '')
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([])
   const [isSearching, setIsSearching] = React.useState(false)
 
+  React.useEffect(() => {
+    if (initialValue) {
+      setInputValue(initialValue)
+    }
+  }, [initialValue])
+
   const onSuggestionSelected = (suggestion: Suggestion) => {
     onSelect(suggestion.package.name)
-  }
-
-  const onSubmit = (value: Maybe<string>) => {
-    if (value) {
-      onSelect(value)
-    }
   }
 
   const [fetchSuggestions] = useDebouncedCallback(async (value: any) => {
@@ -87,6 +86,7 @@ export default function Search({ onSelect, ...otherProps }: Props) {
   }, 300)
 
   const onInputValueChange = (value: string) => {
+    setInputValue(value)
     if (value) {
       fetchSuggestions(value)
     }
@@ -96,6 +96,7 @@ export default function Search({ onSelect, ...otherProps }: Props) {
     <div {...otherProps}>
       <Downshift
         id="downshift-simple"
+        inputValue={inputValue}
         onChange={onSuggestionSelected}
         onInputValueChange={onInputValueChange}
         itemToString={(suggestion: Maybe<Suggestion>) =>
@@ -125,14 +126,9 @@ export default function Search({ onSelect, ...otherProps }: Props) {
           })
 
           return (
-            <form
-              onSubmit={(e: React.SyntheticEvent<HTMLFormElement>) => {
-                e.preventDefault()
-                onSubmit(inputValue)
-              }}
-              className={classes.container}
-            >
+            <div className={classes.container}>
               <TextField
+                name="search"
                 variant="outlined"
                 classes={{
                   root: classes.input,
@@ -184,7 +180,7 @@ export default function Search({ onSelect, ...otherProps }: Props) {
                   </Paper>
                 ) : null}
               </div>
-            </form>
+            </div>
           )
         }}
       </Downshift>

@@ -1,9 +1,9 @@
 import React from 'react'
+import { RouteComponentProps } from 'react-router'
 import { Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Logo from 'components/Logo'
 import SearchInput from 'components/SearchInput'
-import { useRouter } from 'hooks'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,17 +27,20 @@ const useStyles = makeStyles((theme: Theme) =>
     search: {
       marginTop: theme.spacing(3),
       marginBottom: '35vh',
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: 400,
+      },
     },
   })
 )
 
-const Home: React.FC = () => {
+const Home: React.FC<RouteComponentProps> = ({ history }) => {
   const classes = useStyles()
-  const { history } = useRouter()
 
   const onSelect = (value: string) => {
     if (value) {
-      history.push(`/result?p=${value}`)
+      history.push(`/result?p=${value.trim()}`)
     }
   }
 

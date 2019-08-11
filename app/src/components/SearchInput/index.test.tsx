@@ -38,17 +38,4 @@ describe('SearchInput', () => {
 
     expect(onSelect).toHaveBeenCalledWith('react-easy-crop')
   })
-
-  it('should call onSelect when submitting the input', async () => {
-    jest.spyOn(npms, 'getPackagesSuggestions').mockResolvedValue([])
-    const onSelect = jest.fn()
-
-    const { getByPlaceholderText } = render(<SearchInput onSelect={onSelect} />)
-
-    const searchInput = getByPlaceholderText(/find package/i)
-    fireEvent.change(searchInput, { target: { value: 'random-search' } })
-    fireEvent.submit(searchInput)
-
-    expect(onSelect).toHaveBeenCalledWith('random-search')
-  })
 })
