@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       height: '100%',
       borderRadius: 5,
+      transition: 'background 0.2s',
+      transformOrigin: '100% 100%',
+      animation: '$grow 0.4s ease-in',
     },
     gzipBar: {
       position: 'absolute',
@@ -52,12 +55,33 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 5,
+      transition: 'background 0.2s',
+      transformOrigin: '100% 100%',
+      animation: '$grow 0.4s ease-in',
     },
     barLabel: {
       position: 'absolute',
       bottom: -40,
       left: 4,
       transform: 'rotate(270deg)',
+      opacity: 0,
+      animation: '$fade 0.5s 0.1s forwards ease-in',
+    },
+    '@keyframes grow': {
+      from: {
+        transform: 'scaleY(0)',
+      },
+      to: {
+        transform: 'scaleY(1)',
+      },
+    },
+    '@keyframes fade': {
+      from: {
+        opacity: 0,
+      },
+      to: {
+        opacity: 1,
+      },
     },
   })
 )

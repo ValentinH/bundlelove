@@ -31,7 +31,21 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     card: {
+      opacity: 0,
+      animation: '$slide 0.4s forwards ease-in',
+    },
+    cardContent: {
       height: '100%',
+    },
+    '@keyframes slide': {
+      from: {
+        transform: 'translateX(-50px)',
+        opacity: 0,
+      },
+      to: {
+        transform: 'translateX(0)',
+        opacity: 1,
+      },
     },
   })
 )
@@ -100,13 +114,13 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
         <CircularProgress size={50} />
       ) : packageInfo ? (
         <div className={classes.infoRow}>
-          <Card>
-            <CardContent classes={{ root: classes.card }}>
+          <Card classes={{ root: classes.card }}>
+            <CardContent classes={{ root: classes.cardContent }}>
               <PackageStats info={packageInfo} />
             </CardContent>
           </Card>
-          <Card>
-            <CardContent classes={{ root: classes.card }}>
+          <Card classes={{ root: classes.card }}>
+            <CardContent classes={{ root: classes.cardContent }}>
               <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
             </CardContent>
           </Card>

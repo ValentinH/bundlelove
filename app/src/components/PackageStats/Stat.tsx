@@ -16,8 +16,19 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'space-evenly',
     },
+    number: {
+      animation: '$grow 0.4s ease-in',
+    },
     unit: {
       color: theme.palette.primary.main,
+    },
+    '@keyframes grow': {
+      from: {
+        transform: 'scale(0)',
+      },
+      to: {
+        transform: 'scale(1)',
+      },
     },
   })
 )
@@ -31,7 +42,7 @@ const Stat: React.FC<Props> = ({ title, value, unitType }) => {
   const [htmlId] = useId()
   return (
     <div>
-      <div aria-labelledby={htmlId}>
+      <div aria-labelledby={htmlId} className={classes.number}>
         <Typography variant="h3" component="span">
           {roundedSize}
         </Typography>
