@@ -4,17 +4,17 @@ import { Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import Logo from 'components/Logo'
 import SearchInput from 'components/SearchInput'
+import Footer from 'components/Footer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      height: '100vh',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
-      padding: theme.spacing(2),
     },
     logo: {
       width: 100,

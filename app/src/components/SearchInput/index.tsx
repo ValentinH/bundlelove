@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     input: {
+      background: theme.palette.common.white,
       color: 'inherit',
       width: '100%',
     },

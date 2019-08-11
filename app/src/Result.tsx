@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import qs from 'query-string'
-import { CircularProgress, Typography } from '@material-ui/core'
+import { Card, CardContent, CircularProgress, Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import SearchInput from 'components/SearchInput'
 import * as api from 'services/api'
@@ -11,14 +11,6 @@ import PackageHistory from 'components/PackageHistory'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: theme.spacing(2),
-      maxWidth: 1024,
-      margin: 'auto',
-    },
     searchInput: {
       width: '100%',
       marginBottom: theme.spacing(4),
@@ -30,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       display: 'grid',
       gridTemplateRows: 'auto',
-      gridRowGap: theme.spacing(3),
+      gridGap: theme.spacing(3),
       [theme.breakpoints.up('sm')]: {
         gridTemplateColumns: '1fr 1fr',
         gridTemplateRows: 'none',
@@ -97,19 +89,27 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <>
       <SearchInput initialValue={searchValue} onSelect={onSelect} className={classes.searchInput} />
       {isFetchingInfo ? (
         <CircularProgress size={50} />
       ) : packageInfo ? (
         <div className={classes.infoRow}>
-          <PackageStats info={packageInfo} />
-          <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
+          <Card>
+            <CardContent>
+              <PackageStats info={packageInfo} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent>
+              <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
+            </CardContent>
+          </Card>
         </div>
       ) : (
         <Typography variant="subtitle1">Package not found</Typography>
       )}
-    </div>
+    </>
   )
 }
 
