@@ -1,7 +1,7 @@
 {
   "name": "bundlelove-app",
   "version": "1.0.0",
-  "homepage": "https://bundlelove.valentinhervieu.now.sh",
+  "homepage": "https://bundlelove.now.sh",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -9,7 +9,7 @@
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(ky)/)'",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
-    "deploy": "now"
+    "deploy": "now --target production"
   },
   "dependencies": {
     "@material-ui/core": "^4.3.1",
