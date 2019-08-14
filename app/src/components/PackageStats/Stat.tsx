@@ -18,9 +18,28 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     number: {
       animation: '$grow 0.4s ease-in',
+      '&:hover': {
+        transform: 'scale(1.1)',
+      },
     },
     unit: {
       color: theme.palette.primary.main,
+    },
+    time: {
+      position: 'relative',
+      '&:before': {
+        content: 'attr(data-value)',
+        position: 'absolute',
+        zIndex: 2,
+        overflow: 'hidden',
+        color: theme.palette.secondary.main,
+        transition: 'width 0.5s',
+        transitionDuration: 'inherit',
+        width: 0,
+      },
+      '&:hover:before': {
+        width: '100%',
+      },
     },
     '@keyframes grow': {
       from: {
@@ -43,7 +62,15 @@ const Stat: React.FC<Props> = ({ title, value, unitType }) => {
   return (
     <div>
       <div aria-labelledby={htmlId} className={classes.number}>
-        <Typography variant="h3" component="span">
+        <Typography
+          variant="h3"
+          component="span"
+          data-value={roundedSize}
+          className={unitType === 'time' ? classes.time : undefined}
+          style={{
+            transitionDuration: `${size}${unit}`,
+          }}
+        >
           {roundedSize}
         </Typography>
         <Typography variant="h5" component="span" className={classes.unit}>

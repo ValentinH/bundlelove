@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 40,
       position: 'relative',
       bottom: 0,
+      '&:hover': {
+        transform: 'scaleX(1.1)',
+      },
       '&:hover $sizeBar ': {
         background: darken(theme.palette.secondary.main, 0.1),
       },
