@@ -1,6 +1,6 @@
 import React from 'react'
 import Downshift from 'downshift'
-import { useDebouncedCallback } from 'use-debounce'
+import { useDebounce } from 'use-debounce'
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import {
   InputAdornment,
@@ -83,19 +83,27 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
     onSelect(suggestion.package.name)
   }
 
-  const [fetchSuggestions] = useDebouncedCallback(async (value: any) => {
-    setIsSearching(true)
-    const suggestions = await getPackagesSuggestions(value)
-    setSuggestions(suggestions)
-    setIsSearching(false)
-  }, 300)
+  const [debouncedValue] = useDebounce(inputValue, 300)
 
-  const onInputValueChange = (value: string) => {
-    setInputValue(value)
-    if (value) {
-      fetchSuggestions(value)
+  React.useEffect(() => {
+    let active = true
+    async function call() {
+      setIsSearching(true)
+      const suggestions = await getPackagesSuggestions(debouncedValue)
+      if (active) {
+        setSuggestions(suggestions)
+        setIsSearching(false)
+      }
     }
-  }
+    if (debouncedValue) {
+      call()
+    }
+    return () => {
+      active = false
+    }
+  }, [debouncedValue])
+
+  const onInputValueChange = (value: string) => setInputValue(value)
 
   return (
     <div {...otherProps}>
