@@ -8,6 +8,7 @@ import * as api from 'services/api'
 import * as packageUtils from 'utils/package'
 import PackageStats from 'components/PackageStats'
 import PackageHistory from 'components/PackageHistory'
+import PackageComposition from 'components/PackageComposition'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         width: 400,
       },
+    },
+    loader: {
+      marginTop: theme.spacing(4),
     },
     infoRow: {
       width: '100%',
@@ -30,9 +34,15 @@ const useStyles = makeStyles((theme: Theme) =>
         maxHeight: 360,
       },
     },
+    compositionRow: {
+      width: '100%',
+      marginTop: theme.spacing(3),
+      height: 400,
+    },
     card: {
       opacity: 0,
       animation: '$slide 0.4s forwards ease-in',
+      height: '100%',
     },
     cardContent: {
       height: '100%',
@@ -111,20 +121,29 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
     <>
       <SearchInput initialValue={searchValue} onSelect={onSelect} className={classes.searchInput} />
       {isFetchingInfo ? (
-        <CircularProgress size={50} />
+        <CircularProgress size={50} className={classes.loader} />
       ) : packageInfo ? (
-        <div className={classes.infoRow}>
-          <Card classes={{ root: classes.card }}>
-            <CardContent classes={{ root: classes.cardContent }}>
-              <PackageStats info={packageInfo} />
-            </CardContent>
-          </Card>
-          <Card classes={{ root: classes.card }}>
-            <CardContent classes={{ root: classes.cardContent }}>
-              <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
-            </CardContent>
-          </Card>
-        </div>
+        <>
+          <div className={classes.infoRow}>
+            <Card classes={{ root: classes.card }}>
+              <CardContent classes={{ root: classes.cardContent }}>
+                <PackageStats info={packageInfo} />
+              </CardContent>
+            </Card>
+            <Card classes={{ root: classes.card }}>
+              <CardContent classes={{ root: classes.cardContent }}>
+                <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
+              </CardContent>
+            </Card>
+          </div>
+          <div className={classes.compositionRow}>
+            <Card classes={{ root: classes.card }}>
+              <CardContent classes={{ root: classes.cardContent }}>
+                <PackageComposition info={packageInfo} />
+              </CardContent>
+            </Card>
+          </div>
+        </>
       ) : (
         <Typography variant="subtitle1">Package not found</Typography>
       )}
