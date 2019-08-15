@@ -1,0 +1,20 @@
+{
+  "name": "bundlelove",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --prefix name --names \"app,api\" --prefix-colors \"green,blue\" --handle-input \"yarn start:app\" \"yarn start:api\"",
+    "start:app": "cd app && yarn start",
+    "start:api": "cd api && yarn start",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "devDependencies": {
+    "@bahmutov/add-typescript-to-cypress": "^2.1.2",
+    "@testing-library/cypress": "^4.1.0",
+    "concurrently": "^4.1.1",
+    "cypress": "^3.4.1",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2"
+  }
+}

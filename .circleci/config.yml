@@ -10,6 +10,13 @@ workflows:
           filters:
             branches:
               only: master
+      - e2e:
+          requires:
+            - app
+            - api
+          filters:
+            branches:
+              only: master
 jobs:
   app:
     docker:
@@ -56,3 +63,23 @@ jobs:
       - run:
           name: Deploy api
           command: yarn deploy:prod
+
+  e2e:
+    docker:
+      - image: cypress/base:10
+    working_directory: ~/repo
+    steps:
+      - checkout:
+          path: ~/repo
+      - restore_cache:
+          keys:
+            - api-cache-{{ checksum "yarn.lock" }}
+            - api-cache-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: api-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run e2e tests
+          command: CYPRESS_BASE_URL=https://bundlelove.now.sh yarn cy:run
