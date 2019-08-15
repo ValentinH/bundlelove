@@ -30,9 +30,7 @@ app.get('/stats', async (req, res) => {
       res.sendStatus(404)
     }
   } catch (e) {
-    if (process.env.IS_OFFLINE) {
-      console.error(e)
-    }
+    console.error(e)
     res.sendStatus(500)
   }
 })
@@ -46,9 +44,7 @@ app.get('/history', async (req, res) => {
     }
     return res.json(results)
   } catch (e) {
-    if (process.env.IS_OFFLINE) {
-      console.error(e)
-    }
+    console.error(e)
     res.sendStatus(500)
   }
 })

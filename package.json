@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently --prefix name --names \"app,api\" --prefix-colors \"green,blue\" --handle-input \"yarn start:app\" \"yarn start:api\"",
+    "start": "concurrently -k --kill-others-on-fail --prefix name --names \"app,api\" --prefix-colors \"green,blue\" --handle-input \"yarn start:app\" \"yarn start:api\"",
     "start:app": "cd app && yarn start",
     "start:api": "cd api && yarn start",
     "cy:open": "cypress open",

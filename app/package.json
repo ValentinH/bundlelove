@@ -7,7 +7,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(ky)/)'",
-    "eject": "react-scripts eject",
     "predeploy": "yarn build",
     "deploy": "now --target production"
   },
