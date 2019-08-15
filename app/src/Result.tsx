@@ -1,5 +1,6 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
+import Helmet from 'react-helmet'
 import qs from 'query-string'
 import { Card, CardContent, CircularProgress, Typography } from '@material-ui/core'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
@@ -125,6 +126,9 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
         <CircularProgress size={50} className={classes.loader} />
       ) : packageInfo ? (
         <>
+          <Helmet>
+            <title>{packageInfo.name} | BundleLove</title>
+          </Helmet>
           <PackageDescription info={packageInfo} />
           <div className={classes.infoRow}>
             <Card classes={{ root: classes.card }}>
