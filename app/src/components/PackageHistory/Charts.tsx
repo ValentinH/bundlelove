@@ -94,7 +94,7 @@ const Charts: React.FC<Props> = ({ history, onSelect }) => {
   const maxSize = Math.max(...history.map(item => item.size))
 
   return (
-    <figure className={classes.root}>
+    <figure className={classes.root} data-testid="package-history">
       {history.map(item => {
         const { size: gzipSize, unit: gzipUnit } = formatUtils.formatSize(item.gzip)
         const { size: normalSize, unit: normalUnit } = formatUtils.formatSize(item.size)

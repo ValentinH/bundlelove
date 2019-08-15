@@ -9,7 +9,9 @@
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(ky)/)'",
     "eject": "react-scripts eject",
     "predeploy": "yarn build",
-    "deploy": "now --target production"
+    "deploy": "now --target production",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@material-ui/core": "^4.3.1",
@@ -51,9 +53,12 @@
     ]
   },
   "devDependencies": {
+    "@bahmutov/add-typescript-to-cypress": "^2.1.2",
+    "@testing-library/cypress": "^4.1.0",
     "@testing-library/jest-dom": "^4.0.0",
     "@testing-library/react": "^9.1.0",
     "@types/jest": "^24.0.17",
+    "cypress": "^3.4.1",
     "now": "^16.1.1",
     "ts-jest": "^24.0.2"
   }

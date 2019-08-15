@@ -24,3 +24,5 @@ yarn-error.log*
 
 .serverless
 node_modules
+
+app/cypress/videos

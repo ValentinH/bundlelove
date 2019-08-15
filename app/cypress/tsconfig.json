@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["../node_modules/cypress", "*/*.ts", "support/index.js"],
+  "compilerOptions": {
+    "types": ["cypress", "@testing-library/cypress/typings"],
+    "noEmit": false,
+    "allowJs": false,
+    "isolatedModules": false
+  }
+}
