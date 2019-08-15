@@ -29,7 +29,7 @@ jobs:
           keys:
             - app-cache-{{ checksum "yarn.lock" }}
             - app-cache-
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - save_cache:
           paths:
             - node_modules
@@ -52,7 +52,7 @@ jobs:
           keys:
             - api-cache-{{ checksum "yarn.lock" }}
             - api-cache-
-      - run: yarn install
+      - run: yarn install --frozen-lockfile
       - save_cache:
           paths:
             - node_modules
@@ -73,13 +73,16 @@ jobs:
           path: ~/repo
       - restore_cache:
           keys:
-            - api-cache-{{ checksum "yarn.lock" }}
-            - api-cache-
-      - run: yarn install
+            - e2e-cache-{{ checksum "yarn.lock" }}
+            - e2e-cache-
+      - run:
+          name: Setup Dependencies
+          command: yarn install --frozen-lockfile
       - save_cache:
           paths:
             - node_modules
-          key: api-cache-{{ checksum "yarn.lock" }}
+            - ~/.cache ## cache both yarn and Cypress
+          key: e2e-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Run e2e tests
           command: CYPRESS_BASE_URL=https://bundlelove.now.sh yarn cy:run
