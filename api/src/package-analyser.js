@@ -1,6 +1,7 @@
 const got = require('got')
 const getBuiltPackageStats = require('package-build-stats')
 const pkgVersions = require('pkg-versions')
+const compareVersions = require('compare-versions')
 const gitURLParse = require('git-url-parse')
 const winston = require('winston')
 const dynamodb = require('./dynamodb')
@@ -72,7 +73,7 @@ const getPackageStat = async (name, version) => {
 }
 
 const getVersionsForHistory = versions => {
-  const stableVersions = versions.filter(v => v.match(/^\d+\.\d+\.\d+$/))
+  const stableVersions = versions.filter(v => v.match(/^\d+\.\d+\.\d+$/)).sort(compareVersions)
   const last4Versions = stableVersions.slice(-4)
   const [major] = stableVersions[stableVersions.length - 1].split('.')
 

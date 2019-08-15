@@ -1,4 +1,5 @@
 import ky from 'ky'
+import * as packageUtils from 'utils/package'
 
 export interface Suggestion {
   package: {
@@ -33,9 +34,9 @@ export const getPackagesSuggestions = async (query: string) => {
     }
   }
   try {
-    const [cleanQuery] = query.split('@')
+    const { name } = packageUtils.getNameAndVersion(query)
     const suggestions: Suggestion[] = await ky
-      .get(`https://api.npms.io/v2/search/suggestions?q=${cleanQuery}`)
+      .get(`https://api.npms.io/v2/search/suggestions?q=${name}`)
       .json()
     return suggestions.sort(suggestionSort)
   } catch (e) {

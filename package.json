@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently -k --kill-others-on-fail --prefix name --names \"app,api\" --prefix-colors \"green,blue\" --handle-input \"yarn start:app\" \"yarn start:api\"",
-    "start:app": "cd app && yarn start",
-    "start:api": "cd api && yarn start",
+    "dev": "concurrently -k --kill-others-on-fail --prefix name --names \"app,api\" --prefix-colors \"green,blue\" --handle-input \"yarn dev:app\" \"yarn dev:api\"",
+    "dev:app": "cd app && yarn start",
+    "dev:api": "cd api && yarn dev",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "install:app": "cd app && yarn",
+    "install:api": "cd api && yarn",
+    "postinstall": "concurrently --names \"app,api\" --prefix-colors \"green,blue\" \"yarn:install:app\" \"yarn:install:api\""
   },
   "devDependencies": {
     "@bahmutov/add-typescript-to-cypress": "^2.1.2",

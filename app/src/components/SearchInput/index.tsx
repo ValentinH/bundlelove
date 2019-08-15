@@ -44,11 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'auto',
       zIndex: 1,
     },
-    suggestionsList: {
-      margin: 0,
-      padding: 0,
-      listStyleType: 'none',
-    },
     selectedSuggestion: {
       background: `${fade(theme.palette.secondary.main, 0.7)}!important`,
     },

@@ -50,8 +50,8 @@ jobs:
           path: ~/repo
       - restore_cache:
           keys:
-            - api-cache-{{ checksum "yarn.lock" }}
-            - api-cache-
+            - api-cache-2-{{ checksum "yarn.lock" }}
+            - api-cache-2
       - run: yarn install --frozen-lockfile
       - save_cache:
           paths:
@@ -73,8 +73,8 @@ jobs:
           path: ~/repo
       - restore_cache:
           keys:
-            - e2e-cache-{{ checksum "yarn.lock" }}
-            - e2e-cache-
+            - e2e-cache-2-{{ checksum "yarn.lock" }}
+            - e2e-cache-2
       - run:
           name: Setup Dependencies
           command: yarn install --frozen-lockfile

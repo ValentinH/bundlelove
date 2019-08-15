@@ -3,6 +3,9 @@ const AWS = require('aws-sdk')
 const dynamoDb = new AWS.DynamoDB.DocumentClient()
 
 const storeStat = async stat => {
+  if (process.env.DISABLE_CACHE) {
+    return
+  }
   const params = {
     TableName: process.env.tableName,
     Item: {
@@ -14,6 +17,9 @@ const storeStat = async stat => {
 }
 
 const retrieveStat = async (name, version) => {
+  if (process.env.DISABLE_CACHE) {
+    return null
+  }
   const params = {
     TableName: process.env.tableName,
     Key: {

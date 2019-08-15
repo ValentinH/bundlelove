@@ -13,15 +13,15 @@ This application is split in two parts:
 # install the dependencies
 yarn install
 # run both the react app and the local api
-yarn start
+yarn dev
 ```
 
 ## react application (app folder)
 
 The first page of the application is the landing page (https://bundlelove.now.sh). It simply provides a search autocomplete input
-that let the user search for npm packages.
+allowing the user to search for npm packages.
 
-Then, the main page is the result page (https://bundlelove.now.sh/result?p=react-easy-crop). It contains 4 main components:
+Then, the main page is the result page (https://bundlelove.now.sh/result?p=react-easy-crop). It’s built on four components:
 
 - the search input (shared with the landing page)
 - the Stats card that shows the "minified" and "minified + gzip" sizes along with the estimated download times for 2G and 3G.
@@ -71,7 +71,8 @@ Computes the sizes for the 3 latest versions plus the previous major one (if it 
 
 ### scripts
 
-- `start` starts the api on the 3001 port.
+- `start` starts the api on the 3001 port using serverless (you need to run `serverless login` first)
+- `dev` starts the api on the 3001 port without serverless (thus without the cache database)
 - `test` runs the unit tests.
 - `deploy:dev` deploys the api and the database to the dev environment on AWS
 - `deploy:prod` deploys the api and the database to the production environment on AWS

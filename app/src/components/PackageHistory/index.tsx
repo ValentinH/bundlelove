@@ -26,17 +26,25 @@ const PackageHistory: React.FC<Props> = ({ name, onSelect }) => {
   const [isFetchingHistory, setIsFetchingHistory] = React.useState(true)
 
   React.useEffect(() => {
+    let active = true
     async function call() {
       setIsFetchingHistory(true)
       try {
         const pHistory = await api.getPackageHistory(name)
-        setPackageHistory(pHistory)
+        if (active) {
+          setPackageHistory(pHistory)
+          setIsFetchingHistory(false)
+        }
       } catch (e) {
         setPackageHistory(null)
+        setIsFetchingHistory(false)
       }
-      setIsFetchingHistory(false)
     }
     call()
+
+    return () => {
+      active = false
+    }
   }, [name])
 
   return (

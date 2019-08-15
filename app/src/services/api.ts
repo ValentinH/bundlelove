@@ -41,6 +41,7 @@ export const getPackageInfo = async (query: string) => {
       .json()
     return info
   } catch (e) {
+    console.error(e)
     return null
   }
 }
@@ -57,6 +58,7 @@ export const getPackageHistory = async (name: string) => {
       .json()
     return history
   } catch (e) {
+    console.error(e)
     return null
   }
 }

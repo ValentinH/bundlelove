@@ -6,12 +6,14 @@
   "license": "MIT",
   "scripts": {
     "start": "serverless offline start --port 3001",
+    "dev": "nodemon ./src/index.dev.js",
     "test": "yarn jest",
     "deploy:dev": "serverless deploy --stage dev",
     "deploy:prod": "serverless deploy --stage prod"
   },
   "dependencies": {
     "aws-sdk": "^2.507.0",
+    "compare-versions": "^3.5.1",
     "express": "^4.17.1",
     "git-url-parse": "^11.1.2",
     "got": "^9.6.0",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
     "serverless": "^1.49.0",
     "serverless-offline": "^5.9.0"
   }
