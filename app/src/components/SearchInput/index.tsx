@@ -4,6 +4,7 @@ import { useDebounce } from 'use-debounce'
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import {
   InputAdornment,
+  Link,
   TextField,
   Typography,
   MenuItem,
@@ -64,6 +65,9 @@ const useStyles = makeStyles((theme: Theme) =>
       textOverflow: 'ellipsis',
       overflow: 'hidden',
     },
+    noResult: {
+      padding: theme.spacing(1),
+    },
   })
 )
 
@@ -72,6 +76,7 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
   const [inputValue, setInputValue] = React.useState(initialValue || '')
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([])
   const [isSearching, setIsSearching] = React.useState(false)
+  const [hasNoResult, setHasNoResult] = React.useState(false)
 
   React.useEffect(() => {
     if (initialValue) {
@@ -85,12 +90,14 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
 
   const [debouncedValue] = useDebounce(inputValue, 300)
 
+  // fetch the suggestions when the user has stopped typing her input
   React.useEffect(() => {
     let active = true
     async function call() {
       setIsSearching(true)
       const suggestions = await getPackagesSuggestions(debouncedValue)
       if (active) {
+        setHasNoResult(suggestions.length === 0)
         setSuggestions(suggestions)
         setIsSearching(false)
       }
@@ -103,7 +110,15 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
     }
   }, [debouncedValue])
 
-  const onInputValueChange = (value: string) => setInputValue(value)
+  const onInputValueChange = (value: string) => {
+    setInputValue(value)
+    setHasNoResult(false)
+    if (!value) {
+      setSuggestions([])
+    }
+  }
+
+  const showNoResult = hasNoResult && debouncedValue && !isSearching
 
   return (
     <div {...otherProps}>
@@ -123,7 +138,6 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
           getLabelProps,
           getMenuProps,
           highlightedIndex,
-          inputValue,
           isOpen,
           openMenu,
           closeMenu,
@@ -171,26 +185,36 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
               <div {...getMenuProps()}>
                 {isOpen ? (
                   <Paper square className={classes.suggestionsContainer}>
-                    {suggestions.map((suggestion, index) => (
-                      <MenuItem
-                        {...getItemProps({ item: suggestion })}
-                        selected={highlightedIndex === index}
-                        dense
-                        key={suggestion.package.name}
-                        classes={{ selected: classes.selectedSuggestion }}
-                      >
-                        <div className={classes.suggestion}>
-                          <div dangerouslySetInnerHTML={{ __html: suggestion.highlight }} />
-                          <Typography
-                            variant="caption"
-                            component="div"
-                            className={classes.suggestionDescription}
-                          >
-                            {suggestion.package.description}
-                          </Typography>
-                        </div>
-                      </MenuItem>
-                    ))}
+                    {showNoResult ? (
+                      <div className={classes.noResult} {...getItemProps({ item: null })}>
+                        no package found. Click{' '}
+                        <Link href="https://github.com/new" target="_blank">
+                          here
+                        </Link>{' '}
+                        to create it 🙂
+                      </div>
+                    ) : (
+                      suggestions.map((suggestion, index) => (
+                        <MenuItem
+                          {...getItemProps({ item: suggestion })}
+                          selected={highlightedIndex === index}
+                          dense
+                          key={suggestion.package.name}
+                          classes={{ selected: classes.selectedSuggestion }}
+                        >
+                          <div className={classes.suggestion}>
+                            <div dangerouslySetInnerHTML={{ __html: suggestion.highlight }} />
+                            <Typography
+                              variant="caption"
+                              component="div"
+                              className={classes.suggestionDescription}
+                            >
+                              {suggestion.package.description}
+                            </Typography>
+                          </div>
+                        </MenuItem>
+                      ))
+                    )}
                   </Paper>
                 ) : null}
               </div>

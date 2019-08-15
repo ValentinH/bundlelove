@@ -38,4 +38,19 @@ describe('SearchInput', () => {
 
     expect(onSelect).toHaveBeenCalledWith('react-easy-crop')
   })
+  it('should display the no result text when nothing is found', async () => {
+    jest.spyOn(npms, 'getPackagesSuggestions').mockResolvedValue([])
+
+    const { getByPlaceholderText, findByText, container } = render(
+      <SearchInput onSelect={jest.fn()} />
+    )
+
+    const searchInput = getByPlaceholderText(/find package/i)
+    fireEvent.focus(searchInput) // react-autosuggest only render the suggestions if it has focus
+    fireEvent.change(searchInput, { target: { value: 'blablabla' } })
+
+    await findByText(/no package found/i)
+
+    expect(container.querySelectorAll('li')).toHaveLength(0)
+  })
 })
