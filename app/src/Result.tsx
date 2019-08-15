@@ -9,6 +9,7 @@ import * as packageUtils from 'utils/package'
 import PackageStats from 'components/PackageStats'
 import PackageHistory from 'components/PackageHistory'
 import PackageComposition from 'components/PackageComposition'
+import PackageDescription from 'components/PackageDescription'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -124,6 +125,7 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
         <CircularProgress size={50} className={classes.loader} />
       ) : packageInfo ? (
         <>
+          <PackageDescription info={packageInfo} />
           <div className={classes.infoRow}>
             <Card classes={{ root: classes.card }}>
               <CardContent classes={{ root: classes.cardContent }}>
