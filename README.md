@@ -148,3 +148,9 @@ and only deploy to production if the tests pass.
 ### API performance
 
 In order to improve the time to show the statistics of the most popular packages, I could run a script to pre-compute the statistics of the [top 1000](https://gist.github.com/anvaka/8e8fa57c7ee1350e3491) packages of the NPM registry and warm the cache.
+
+### Better error handling
+
+The `package-build-stats` exposes detailed error types that enables BundlePhobia to
+show a custom message for each of them. In this project, these errors are not handled
+and the UI will always claim "Package not found" when something goes wrong.

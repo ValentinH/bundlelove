@@ -1,8 +1,11 @@
 const serverless = require('serverless-http')
 const express = require('express')
+const winston = require('winston')
 const analyser = require('./package-analyser')
 
 const app = express()
+
+winston.add(new winston.transports.Console())
 
 // CORS middleware
 app.use(function(req, res, next) {
