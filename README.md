@@ -95,7 +95,7 @@ Computes the sizes for the 3 latest versions plus the previous major one (if it 
 I've addressed all the lighthouse recommendations that made sense to me. Here are the main ones:
 
 - using [webfontloader](https://github.com/typekit/webfontloader) to avoid blocking the rendering while fonts are loading.
-- using `React.lazy` and `Suspense` to code-split the History and Compositikon components in order to improve initial rendering time.
+- using `React.lazy` and `Suspense` to code-split the History and Composition components in order to improve the initial rendering time.
 - configure the caching policy of `now.sh` to let the user's browser cache the static resources.
 - adding `preconnect` links for the main resources (Googlefont and the AWS API).
 
@@ -135,8 +135,8 @@ It contains 3 jobs:
 
 Two nice features of Bundlephobia that could be implemented in this app are:
 
-- the "Similar packages" section that let the user find packages offering similar functionalities to the currently viewed package
-- the "Scan a package.json" page that let you upload the package.json of any project and see all dependencies costs at a glance
+- the "Similar packages" section that lets the user find packages offering similar functionalities to the currently viewed package
+- the "Scan a package.json" page that lets you upload the package.json of any project and see all dependencies costs at a glance
 
 ### CI/CD pipeline
 
