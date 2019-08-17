@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const PackageComposition: React.FC<Props> = ({ info }) => {
   const classes = useStyles()
 
+  const totalSize = info.dependencySizes.reduce((total, item) => total + item.approximateSize, 0)
+
   const rectangles = getTreemapData(info)
   const colors = colormap({
     colormap: 'portland',
@@ -61,12 +63,16 @@ const PackageComposition: React.FC<Props> = ({ info }) => {
       </Typography>
       <div className={classes.treemap}>
         {rectangles.map((rect, i) => {
-          const percent = (rect.value / info.size) * 100
+          const percent = (rect.value / totalSize) * 100
           const percentString = parseFloat(percent.toFixed(1))
-          const { size, unit } = formatUtils.formatSize(rect.value)
-          const roundedSize = parseFloat(size.toFixed(1))
 
-          const tooltipTitle = `${rect.name} | ${percentString}% | ${roundedSize}${unit}`
+          // the dependencies approximate size is already a bit minified, so we apply this minification
+          // ratio so that the value matches the stats displayed in the Stats card
+          const estimatedSize = (rect.value / totalSize) * info.size
+          const { size, unit } = formatUtils.formatSize(estimatedSize)
+          const roundedSize = parseFloat(size.toFixed(2))
+
+          const tooltipTitle = `${rect.name} | ${percentString}% | ~ ${roundedSize}${unit}`
 
           const content = (
             <Tooltip title={tooltipTitle} placement="top">
