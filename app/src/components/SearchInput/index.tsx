@@ -155,13 +155,12 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
                 classes={{
                   root: classes.input,
                 }}
-                InputLabelProps={getLabelProps()}
                 InputProps={{
                   onBlur,
                   onFocus,
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon color="primary" />
+                      <SearchIcon color="primary" aria-label="search" {...getLabelProps()} />
                     </InputAdornment>
                   ),
                   endAdornment: isSearching && (
@@ -183,7 +182,11 @@ export default function Search({ initialValue, onSelect, ...otherProps }: Props)
                     {showNoResult ? (
                       <div className={classes.noResult} {...getItemProps({ item: null })}>
                         no package found. Click{' '}
-                        <Link href="https://github.com/new" target="_blank">
+                        <Link
+                          href="https://github.com/new"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           here
                         </Link>{' '}
                         to create it 🙂

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { RouteComponentProps } from 'react-router'
 import Helmet from 'react-helmet'
 import qs from 'query-string'
@@ -8,9 +8,10 @@ import SearchInput from 'components/SearchInput'
 import * as api from 'services/api'
 import * as packageUtils from 'utils/package'
 import PackageStats from 'components/PackageStats'
-import PackageHistory from 'components/PackageHistory'
-import PackageComposition from 'components/PackageComposition'
 import PackageDescription from 'components/PackageDescription'
+
+const PackageHistory = React.lazy(() => import('components/PackageHistory'))
+const PackageComposition = React.lazy(() => import('components/PackageComposition'))
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cardContent: {
       height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     '@keyframes slide': {
       from: {
@@ -138,14 +142,18 @@ const Result: React.FC<RouteComponentProps> = ({ history, location }) => {
             </Card>
             <Card classes={{ root: classes.card }}>
               <CardContent classes={{ root: classes.cardContent }}>
-                <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
+                <Suspense fallback={<CircularProgress size={30} />}>
+                  <PackageHistory name={packageInfo.name} onSelect={onVersionSelect} />
+                </Suspense>
               </CardContent>
             </Card>
           </div>
           <div className={classes.compositionRow}>
             <Card classes={{ root: classes.card }}>
               <CardContent classes={{ root: classes.cardContent }}>
-                <PackageComposition info={packageInfo} />
+                <Suspense fallback={<CircularProgress size={30} />}>
+                  <PackageComposition info={packageInfo} />
+                </Suspense>
               </CardContent>
             </Card>
           </div>

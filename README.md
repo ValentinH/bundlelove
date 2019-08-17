@@ -37,6 +37,7 @@ Then, the main page is the result page (https://bundlelove.now.sh/result?p=react
 - `test` runs the unit and integration tests.
 - `build` generates the production version of the app.
 - `deploy` deploys the application to the production target of now.sh.
+- `analyze` analyze the bundle size and open the `source-map-explorer` ui.
 
 ### built with
 

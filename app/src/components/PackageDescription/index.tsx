@@ -32,7 +32,13 @@ const PackageDescription: React.FC<Props> = ({ info }) => {
   return (
     <div className={classes.root}>
       <Typography>{info.description}</Typography>
-      <Link href={info.repository} target="_blank" className={classes.logolink}>
+      <Link
+        href={info.repository}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Github repository"
+        className={classes.logolink}
+      >
         <GithubLogo className={classes.logo} />
       </Link>
     </div>
