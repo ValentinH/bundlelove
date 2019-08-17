@@ -10,7 +10,7 @@
     "cy:run": "cypress run",
     "install:app": "cd app && yarn",
     "install:api": "cd api && yarn",
-    "postinstall": "concurrently --names \"app,api\" --prefix-colors \"green,blue\" \"yarn:install:app\" \"yarn:install:api\""
+    "predev": "concurrently --names \"app,api\" --prefix-colors \"green,blue\" \"yarn:install:app\" \"yarn:install:api\""
   },
   "devDependencies": {
     "@bahmutov/add-typescript-to-cypress": "^2.1.2",
