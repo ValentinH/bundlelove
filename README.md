@@ -88,6 +88,24 @@ Computes the sizes for the 3 latest versions plus the previous major one (if it 
 - [got](https://github.com/sindresorhus/got) for the HTTP requests
 - [aws-sdk](https://www.npmjs.com/package/aws-sdk) to query the DynamoDB database
 
+### Lighthouse report
+
+![image](https://user-images.githubusercontent.com/2678610/63210526-cc5eea80-c0ef-11e9-9ea2-846ff6a5ce1e.png)
+
+I've addressed all the lighthouse recommendations that made sense to me. Here are the main ones:
+
+- using [webfontloader](https://github.com/typekit/webfontloader) to avoid blocking the rendering while fonts are loading.
+- using `React.lazy` and `Suspense` to code-split the History and Compositikon components in order to improve initial rendering time.
+- configure the caching policy of `now.sh` to let the user's browser cache the static resources.
+- adding `preconnect` links for the main resources (Googlefont and the AWS API).
+
+What's remaining but that I'm not willing to change now:
+
+1. **Performance**: have smaller JS bundles (I believe I'm already using quite a small amount of JS for this React app).
+1. **Accessibility**: have a higher contrast-ratio on the red texts (primary color) and some texts on the composition treemap.
+1. **Best practices**: -
+1. **SEO**: Page is blocked from indexing (indeed, as this project is private, indexing is blocked on purpose via robots.txt).
+
 ## end-to-end tests
 
 I've written a few end-to-end tests using [Cypress](https://www.cypress.io). The goal is to ensure that the app
@@ -111,7 +129,22 @@ It contains 3 jobs:
 - `api`: run the jest tests and deploy the express api and the database to AWS lambda
 - `e2e`: run the cypress tests directly on the production app (https://bundlelove.now.sh) once the 2 other jobs are completed.
 
-> This pipeline is a simple demo using CircleCI to deploy all the components of the application.
-> Running the e2e tests once everything is deployed won't prevent us from breaking the production, it will only alert if
-> something went wrong. As an improvement, we could imagine deploying both the app and the api to a staging environment, run the e2e tests
-> and only deploy to production if the tests pass.
+## Limitations
+
+### Features
+
+Two nice features of Bundlephobia that could be implemented in this app are:
+
+- the "Similar packages" section that let the user find packages offering similar functionalities to the currently viewed package
+- the "Scan a package.json" page that let you upload the package.json of any project and see all dependencies costs at a glance
+
+### CI/CD pipeline
+
+The pipeline implemented in this project is a simple demo using CircleCI to deploy all the components of the application.
+Running the e2e tests once everything is deployed won't prevent us from breaking the production, it will only alert if
+something went wrong. As an improvement, we could imagine deploying both the app and the api to a staging environment, run the e2e tests
+and only deploy to production if the tests pass.
+
+### API performance
+
+In order to improve the time to show the statistics of the most popular packages, I could run a script to pre-compute the statistics of the [top 1000](https://gist.github.com/anvaka/8e8fa57c7ee1350e3491) packages of the NPM registry and warm the cache.
